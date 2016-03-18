@@ -1,0 +1,48 @@
+body {
+  font-family: sans-serif;
+  background-color: #F0F0F0;
+}
+
+main {
+  width: 500px;
+  background-color: #ffffff;
+  border-color: #999999;
+  border-style: solid;
+  border-width: 1px;
+  padding: 5px 20px;
+  margin: auto;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 18px;
+  margin-bottom: 0;
+}
+
+.results {
+  margin-top: 30px;
+}
+
+ul {
+  margin-top: 5px;
+}
+
+p, li {
+  font-size: 14px;
+}
+
+li {
+  list-style-type: none;
+  margin-left: -30px;
+  line-height: 1.8;
+  border-bottom-color: #BFD6DE;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+p.monthly-total-comp {
+  margin-top: 5px;
+}
