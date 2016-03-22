@@ -1,20 +1,45 @@
 $(document).ready(function() {
 
-    $('#submit-button').on('click', postData);
-
+    $('#submit-button').on('click', getFormData);
+    getData();
+    // appendDom();
 });
+var yearlySalaryExpense = 0;
+var salaryExpense = 0;
+var salaryArray = {};
+
+// function doItAll(){
+//   getFormData();
+//   // postData();
+//   // getData();
+//   // appendDom();
+//   // monthlySalaryExpense();
+// }
+
+var globalData;
+
+var values = {};
+
+function getFormData() {
+      event.preventDefault();
+
+      $.each($('#employeeForm').serializeArray(), function(i, field) {
+          values[field.name] = field.value;
+      });
+
+      //clear out form
+    $('#employeeForm').find('input[type=text]').val('');
+
+      console.log("these are the", values);
+
+      postData(values);
+      getData();
+
+
+}
 
 
 function postData() {
-    event.preventDefault();
-
-    var values = {};
-    $.each($('#employeeForm').serializeArray(), function(i, field) {
-        values[field.name] = field.value;
-    });
-
-    console.log("these are the", values);
-
     $.ajax({
         type: 'POST',
         url: '/employees',
@@ -32,59 +57,43 @@ function postData() {
 
 }
 
-// //clear out form
-// $('#employeeForm').find('input[type=text]').val('');
+//get the data from the db
+function getData() {
+    $.ajax({
+        type: 'GET',
+        url: '/employees',
+        success: function(data) {
+            // console.log(data);
+            // globalData = data;
+            appendDom(data);
+        }
+    });
+}
 
 
-// monthlySalaryExpense();
+//try Ryan's way
+function appendDom(empData){
+  yearlySalaryExpense = 0;
+  $('.output-container').empty();
+  empData.forEach(function(employee){
+    $('.output-container').append('<p>' + employee.lastname + ', ' + employee.firstname + ': ' + employee.emp_id
+      + ', ' + employee.title + ', ' + employee.salary + '<p>');
+
+      // salaryArray.push(employee.salary)
+
+    yearlySalaryExpense += parseInt(employee.salary);
+
+  });
+
+  salaryExpense = yearlySalaryExpense/12;
+  console.log(salaryExpense);
 
 
+  appendSalaryExpense();
 
+}
 
-
-
-
-var empArray = [];
-
-//calculate monthly salary expense
-function monthlySalaryExpense(){
-  var salaryExpense = 0;
-  for(i = 0; i < empArray.length; i++){
-    var emp = empArray[i];
-    salaryExpense += parseInt(emp.salary/12);
-
-  }
-
-
-
-  //show each entry in a list
-  function addEntry(){
-    $('.output-container').append('<li></li>');
-
-    var $el = $('.output-container').children().last();
-
-    $el.append('.output-container').text(emp.firstname + ' ' + emp.lastname +
-    ', #' + emp.empID + ', ' + emp.title +
-      ', $' + emp.salary + '/year ').append('<button class="delete">Delete</button>');
-
-  }
-
-  addEntry()
-
-  //set the delete button
-    function deleteClick(){
-      $(this).parent().remove();
-
-    }
-
-
-  //console.log(salaryExpense);
-
-  //show updated total
+function appendSalaryExpense(){
+  $('.monthly-total-comp').empty();
   $('.monthly-total-comp').text('$' + salaryExpense + '/month');
-
-  //delete entry from output-container
-  $('.output-container').on('click', '.delete', deleteClick);
-
-
 }
