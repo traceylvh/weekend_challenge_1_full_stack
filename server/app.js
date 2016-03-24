@@ -3,6 +3,7 @@ var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
 var employees = require('./routes/employees.js');
+var deletetask = require("./routes/deletetask.js");
 
 // bring in pg module
 var pg = require('pg');
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/employees', employees);
+app.use("/deletetask", deletetask);
 
 
 //connect and set table if none

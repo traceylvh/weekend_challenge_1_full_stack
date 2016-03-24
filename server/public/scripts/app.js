@@ -1,20 +1,15 @@
 $(document).ready(function() {
 
     $('#submit-button').on('click', getFormData);
+    $('.output-container').on('click', '.delete', deleteTask);
     getData();
-    // appendDom();
+
 });
 var yearlySalaryExpense = 0;
 var salaryExpense = 0;
 var salaryArray = {};
 
-// function doItAll(){
-//   getFormData();
-//   // postData();
-//   // getData();
-//   // appendDom();
-//   // monthlySalaryExpense();
-// }
+
 
 var globalData;
 
@@ -77,10 +72,10 @@ function appendDom(empData){
   $('.output-container').empty();
   empData.forEach(function(employee){
     $('.output-container').append('<p>' + employee.lastname + ', ' + employee.firstname + ': ' + employee.emp_id
-      + ', ' + employee.title + ', ' + employee.salary + '<p>');
+      + ', ' + employee.title + ', ' + employee.salary + ' <button data-id="' + employee.id + '" class="delete">Delete</button> ' + '<p>');
+
 
       // salaryArray.push(employee.salary)
-
     yearlySalaryExpense += parseInt(employee.salary);
 
   });
@@ -96,4 +91,29 @@ function appendDom(empData){
 function appendSalaryExpense(){
   $('.monthly-total-comp').empty();
   $('.monthly-total-comp').text('$' + salaryExpense + '/month');
+}
+
+//delete task
+function deleteTask() {
+
+    // $(this).parent().remove();
+    var deleteTask = {};
+    deleteTask.id = $(this).data('id');
+
+    $.ajax({
+        type: 'DELETE',
+        url: '/deleteTask',
+        data: deleteTask,
+        success: function(data) {
+            if(data) {
+                // everything went ok
+                console.log('from server:', data);
+                getData();
+            } else {
+                console.log('error');
+            }
+        }
+    });
+
+
 }
